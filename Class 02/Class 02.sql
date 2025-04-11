@@ -98,3 +98,105 @@ VALUES ('Mouse', 'P003', 'Gaming Mouse',45.0, 90.00)
 
 ALTER TABLE dbo.Product
 ADD CONSTRAINT CHK_Product_Price CHECK (Price <= Cost * 2)
+
+
+
+-- PRIMARY KEY e glavniot identifikator na eden rekord vo tabela
+
+-- FOREIGN KEY sluzhat kako pokazateli do nekoj rekord od druga tabela. 
+
+SELECT * FROM [dbo].[BusinessEntity]
+SELECT * FROM [dbo].[Customer]
+SELECT * FROM [dbo].[Product]
+SELECT * FROM [dbo].[Employee]
+SELECT * FROM [dbo].[Order]
+SELECT * FROM [dbo].[OrderDetails]
+
+-- *** Foreign keys of ORDER table ***
+
+ALTER TABLE [dbo].[Order]
+ADD CONSTRAINT FK_Order_BusinessEntity FOREIGN KEY (BusinessEntityId) REFERENCES BusinessEntity(Id)
+
+-- *** FK: Order => Customer
+-- One to Many Relationship
+-- One customer can place many Orders
+
+ALTER TABLE [dbo].[Order]
+ADD CONSTRAINT FK_Order_Customer FOREIGN KEY (CustomerId) REFERENCES Customer(Id)
+
+
+
+
+
+
+
+
+
+
+
+-- *************************** JOINS ******************************
+
+CREATE TABLE TableA (idA INT NOT NULL);
+CREATE TABLE TableB (idB INT NOT NULL);
+
+INSERT INTO TableA VALUES (1), (2), (3)
+INSERT INTO TableB VALUES (2), (3), (4)
+
+SELECT * FROM TableA
+SELECT * FROM TableB
+
+
+-- **** Cross Join ****
+SELECT * FROM TableA
+CROSS JOIN TableB
+
+
+
+-- *** Inner Join ***
+SELECT * FROM TableA
+INNER JOIN TableB ON idA = idB
+
+
+
+-- *** Left Join ***
+SELECT * FROM TableA
+LEFT JOIN TableB ON idA = idB
+
+
+
+-- *** Right Join ***
+SELECT * FROM TableA
+RIGHT JOIN TableB ON idA = idB
+
+
+
+-- *** Full Join ***
+SELECT * FROM TableA
+FULL JOIN TableB ON idA = idB
+
+
+
+
+
+-- **** WORKSHOP 6 ****
+SELECT * FROM [dbo].[BusinessEntity]
+SELECT * FROM [dbo].[Customer]
+SELECT * FROM [dbo].[Product]
+SELECT * FROM [dbo].[Employee]
+SELECT * FROM [dbo].[BusinessEntity]
+SELECT * FROM [dbo].[OrderDetails]
+SELECT * FROM [dbo].[Order]
+
+
+SELECT c.Name AS [Customer Name], p.Name AS [Product Name] FROM Customer c
+CROSS JOIN Product p
+
+
+
+-- *** List all Business Entities That have any Order
+SELECT * FROM [dbo].[BusinessEntity]
+SELECT * FROM [dbo].[Order]
+
+
+SELECT DISTINCT be.* FROM dbo.BusinessEntity be
+JOIN dbo.[Order] o ON o.BusinessEntityId = be.Id
