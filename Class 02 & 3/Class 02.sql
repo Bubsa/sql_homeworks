@@ -200,3 +200,41 @@ SELECT * FROM [dbo].[Order]
 
 SELECT DISTINCT be.* FROM dbo.BusinessEntity be
 JOIN dbo.[Order] o ON o.BusinessEntityId = be.Id
+
+
+
+
+
+
+
+
+
+
+-- ************************************************************************ A  G  R  E  G  A  T  I  O  N  S *******************************************************************************
+
+-- PRIMER: Totalna suma na narachki od Business Entity
+
+SELECT be.Name, SUM (o.TotalPrice) FROM dbo.[Order] o
+JOIN dbo.BusinessEntity be ON be.Id = o.BusinessEntityId
+GROUP BY be.Name
+
+
+-- PRIMER: Brojka na vraboteni spored rod
+
+SELECT e.Gender, COUNT(Id) AS GenderCount FROM dbo.Employee e
+GROUP BY e.Gender
+
+
+-- PRIMER: Brojka na Customer, naracka po REGION
+
+SELECT c.RegionName, COUNT(c.Id) FROM dbo.Customer c
+INNER JOIN dbo.[Order] o ON c.Id = o.CustomerId
+GROUP BY c.RegionName
+
+
+-- PRIMER: Totalna cena na naracki spored Busines Entity so totalna cena nad 1 million
+
+SELECT be.Name as BusinessEntityName, SUM(o.TotalPrice) FROM dbo.BusinessEntity be
+INNER JOIN dbo.[Order] o ON be.Id = o.BusinessEntityId
+GROUP BY be.Name
+HAVING SUM(o.TotalPrice) > 1000000
